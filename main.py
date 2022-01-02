@@ -25,6 +25,8 @@ def get_yyyy_mm_dd_from_utc(dt):
     date = datetime.utcfromtimestamp(dt)
     
     return str(date.year) + "-" + str(date.month) + "-" + str(date.day)
+
+# consider turning these four-fold variables into functions for compactness...
  
 
 # assign initalising variables to the four subreddits - connect to them via reddit API
@@ -36,10 +38,10 @@ skeptic = reddit.subreddit('skeptic')
 
 #[submission.comments for submission in antiwork.top(limit=10)]
 
-antiwork = antiwork.comments(limit=400)
-productivity = productivity.comments(limit=400)
-psychic = psychic.comments(limit=400)
-skeptic = skeptic.comments(limit=400)
+antiwork = antiwork.comments(limit=300)
+productivity = productivity.comments(limit=100)
+psychic = psychic.comments(limit=100)
+skeptic = skeptic.comments(limit=100)
 
 discord_string = "Did you know /r/Productivity has an official Discord server?"
 
@@ -66,15 +68,27 @@ tagged_skeptic = pos_tag(tokenized_skeptic)
 
 #print(tagged_antiwork)
 
+noun_tags = ['NN', 'NNS', 'NNP', 'NNPS'] # noun singular, noun plural, proper noun singular, proper noun plural
+verb_tags = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"] # verb base, verb PST tense, verb gerund/progressive, verb PST participle, verb sing. PRES
+adjective_tags = ["JJ", "JJR", "JJS"] # adj, adj comparative, adj superlative
+
+
 
 # analyse frequency distribution of tokenized (untagged) words
-freq_antiwork = nltk.FreqDist(tokenized_antiwork)
+#nouns_antiwork = nltk.FreqDist([x for x in tagged_antiwork if x[1] in noun_tags])
 #freq_productivity = nltk.FreqDist(tokenized_productivity)
 #freq_psychic = nltk.FreqDist(tokenized_psychic)
 #freq_skeptic = nltk.FreqDist(tokenized_skeptic)
 
+def find_nouns(community):
+  return nltk.FreqDist([x for x in community if x[1] in noun_tags])
+
+find_nouns(tagged_antiwork)
+
+
 #filter to only include words of more than length 3 chars
-antiwork_filter = dict([(m, n) for m, n in freq_antiwork.items() if len(m) > 3])
+
+#antiwork_filter = dict([(m, n) for m, n in freq_antiwork.items() if len(m) > 3])
 #productivity_filter = dict([(m, n) for m, n in freq_productivity.items() if len(m) > 3])
 #psychic_filter = dict([(m, n) for m, n in freq_psychic.items() if len(m) > 3])
 #skeptic_filter =  dict([(m, n) for m, n in freq_skeptic.items() if len(m) > 3])
@@ -92,10 +106,10 @@ antiwork_filter = dict([(m, n) for m, n in freq_antiwork.items() if len(m) > 3])
 
 
 #productivity_dist = nltk.FreqDist(productivity_filter)
-antiwork_dist = nltk.FreqDist(antiwork_filter)
+antiwork_dist = nltk.FreqDist(find_nouns(tagged_antiwork))
 #psychic_dist = nltk.FreqDist(psychic_filter)
 #skeptic_dist = nltk.FreqDist(skeptic_filter)
 
-antiwork_dist.plot(50, cumulative=False, title="Antiwork Analysis")
+antiwork_dist.plot(20, cumulative=False, title="Antiwork Analysis")
 
 
