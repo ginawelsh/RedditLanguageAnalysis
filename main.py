@@ -1,6 +1,5 @@
 # language analysis of the comments of 4 subreddits: r/antiwork, r/productivity, r/psychic and r/skeptic
 import os, os.path
-#from re import A
 import nltk
 from nltk import word_tokenize
 import nltk.data
