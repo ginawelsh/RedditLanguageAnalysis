@@ -35,33 +35,10 @@ skeptic = reddit.subreddit('skeptic')
 
 #[submission.comments for submission in antiwork.top(limit=10)]
 
-antiwork = antiwork.comments(limit=200)
-productivity = productivity.comments(limit=200)
-psychic = psychic.comments(limit=200)
-skeptic = skeptic.comments(limit=200)
-
-#for comment in productivity: #.comments.list():
-  #print(comment.body)
-
-
-    #all_comments = submission.comments.list()
-    #print(all_comments)
-
-    # https://praw.readthedocs.io/en/latest/tutorials/comments.html
-#submission.comments.replace_more(limit=None)
-#comment_body = ""
-
-#for comment in submission.comments.list():
-   # print(comment.body)
-   # comment_body =  comment_body + comment.body + "\n"
-
-#top_antiwork["z_comments"].append(comment_body)
-
-#antiwork_data = pd.DataFrame(top_antiwork)
-
-#for comment in antiwork.comments.list():
- # print(comment.body)
-  #antiwork_comments = antiwork_comments + comment.body + "\n" 
+antiwork = antiwork.comments(limit=400)
+productivity = productivity.comments(limit=400)
+psychic = psychic.comments(limit=400)
+skeptic = skeptic.comments(limit=400)
 
 # create corpora training data for each subreddit based on top-level comments
 antiwork_corpus = [comment.body for comment in antiwork]
@@ -127,32 +104,4 @@ tagged_skeptic = pos_tag(tokenized_skeptic)
 #psychic_dist = nltk.FreqDist(psychic_filter)
 #skeptic_dist = nltk.FreqDist(skeptic_filter)
 
-
-
-
-#productivity_dist.plot(50, cumulative=False, title="Productivity Analysis")
-#antiwork_dist.plot(50, cumulative=False, title="Antiwork Analysis")
-#psychic_dist.plot(50, cumulative=False, title="Psychic Analysis")
-#skeptic_dist.plot(50, cumulative=False, title="Skeptic Analysis")
-
-# create dictionary storing topic info
-"""
-topics_dict = { "title":[], \
-                "score":[], \
-                "id":[], "url":[], \
-                "comms_num": [], \
-                "created": [], \
-                "body":[]}"""
-
-"""
-for submission in top_antiwork:
-    topics_dict["title"].append(submission.title)
-    topics_dict["score"].append(submission.score)
-    topics_dict["id"].append(submission.id)
-    topics_dict["url"].append(submission.url)
-    topics_dict["comms_num"].append(submission.num_comments)
-    topics_dict["created"].append(submission.created)
-    topics_dict["body"].append(submission.selftext)
-
-"""
 
