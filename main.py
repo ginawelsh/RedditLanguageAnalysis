@@ -26,9 +26,6 @@ def get_yyyy_mm_dd_from_utc(dt):
     
     return str(date.year) + "-" + str(date.month) + "-" + str(date.day)
 
-# consider turning these four-fold variables into functions for compactness...
- 
-
 # assign initalising variables to the four subreddits - connect to them via reddit API
 antiwork = reddit.subreddit('antiwork')
 productivity = reddit.subreddit('productivity')
@@ -53,10 +50,14 @@ skeptic_corpus = [comment.body for comment in skeptic]
 
 
 # tokenize corpora
-tokenized_antiwork = word_tokenize("".join(antiwork_corpus))
-tokenized_productivity = word_tokenize("".join(productivity_corpus))
-tokenized_psychic = word_tokenize("".join(psychic_corpus))
-tokenized_skeptic = word_tokenize("".join(skeptic_corpus))
+
+def tokenize(community):
+  return word_tokenize("".join(community))
+
+tokenized_antiwork = tokenize(antiwork_corpus)
+tokenized_productivity = tokenize(productivity_corpus)
+tokenized_psychic = tokenize(psychic_corpus)
+tokenized_skeptic = tokenize(skeptic_corpus)
 
 #print(tokenized_antiwork)
 
@@ -73,18 +74,31 @@ verb_tags = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"] # verb base, verb PST tens
 adjective_tags = ["JJ", "JJR", "JJS"] # adj, adj comparative, adj superlative
 
 
-
-# analyse frequency distribution of tokenized (untagged) words
 #nouns_antiwork = nltk.FreqDist([x for x in tagged_antiwork if x[1] in noun_tags])
 #freq_productivity = nltk.FreqDist(tokenized_productivity)
 #freq_psychic = nltk.FreqDist(tokenized_psychic)
 #freq_skeptic = nltk.FreqDist(tokenized_skeptic)
 
+
+
+# find nouns, verbs, adjectives for any community
+
 def find_nouns(community):
   return nltk.FreqDist([x for x in community if x[1] in noun_tags])
 
-find_nouns(tagged_antiwork)
+def find_verbs(community):
+  return nltk.FreqDist([x for x in community if x[1] in verb_tags])
 
+def find_adjectives(community):
+  return nltk.FreqDist([x for x in community if x[1] in adjective_tags])
+
+
+
+# antiwork top 20 words (nouns/verbs/adjectives)
+
+antiwork_nouns = find_nouns(tagged_antiwork)
+antiwork_verbs = find_verbs(tagged_antiwork)
+antiwork_adjectives = find_adjectives(tagged_antiwork)
 
 #filter to only include words of more than length 3 chars
 
