@@ -105,6 +105,9 @@ skeptic_verbs = nltk.FreqDist(find_verbs(tagged_skeptic))
 skeptic_adjs = nltk.FreqDist(find_adjs(tagged_skeptic))
 
 
+#print(psychic_nouns.items())
+
+
 # PLOTTING GRAPHS
 
 #skeptic_adjs.plot(30, cumulative=False, title="Skeptic Adjectives")
@@ -113,9 +116,9 @@ skeptic_adjs = nltk.FreqDist(find_adjs(tagged_skeptic))
 #skeptic_nouns.plot(20, cumulative=False, title="Skeptic Nouns")
 #psychic_nouns.plot(20, cumulative=False, title="Psychic Nouns")
 
-productivity_nouns.plot(20, cumulative=False, title="Top 20 /r/productivity nouns")
-antiwork_nouns.plot(20, cumulative=False, title="Top 20 /r/antiwork nouns")
-psychic_nouns.plot(20, cumulative=False, title="Top 20 /r/psychic nouns")
-skeptic_nouns.plot(20, cumulative=False, title="Top 20 /r/skeptic nouns")
+#productivity_nouns.plot(20, cumulative=False, title="Top 20 /r/productivity nouns")
+#antiwork_nouns.plot(20, cumulative=False, title="Top 20 /r/antiwork nouns")
+psychic_verbs.plot(20, cumulative=False, title="Top 20 /r/psychic verbs")
+skeptic_verbs.plot(20, cumulative=False, title="Top 20 /r/skeptic verbs")
 
 
