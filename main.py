@@ -28,19 +28,21 @@ skeptic = reddit.subreddit('skeptic')
 #[submission.comments for submission in antiwork.top(limit=10)]
 
 antiwork = antiwork.comments(limit=300)
-productivity = productivity.comments(limit=100)
-psychic = psychic.comments(limit=100)
-skeptic = skeptic.comments(limit=100)
+productivity = productivity.comments(limit=300)
+psychic = psychic.comments(limit=300)
+skeptic = skeptic.comments(limit=300)
 
 # string to filter out in productivity data
 discord_string = "Did you know /r/Productivity has an official Discord server?"
 
-# create corpora training data for each subreddit based on top-level comments - left untokenized here in case of syntactic analysis
-antiwork_corpus = [comment.body for comment in antiwork]
-productivity_corpus = [comment.body for comment in productivity if discord_string not in comment.body]
-psychic_corpus = [comment.body for comment in psychic]
-skeptic_corpus = [comment.body for comment in skeptic]
+def return_comments(community):
+  return [comment.body for comment in community if discord_string not in comment.body]
 
+# create corpora training data for each subreddit based on top-level comments - left untokenized here in case of syntactic analysis
+antiwork_corpus = return_comments(antiwork)
+productivity_corpus = return_comments(productivity)
+psychic_corpus = return_comments(psychic)
+skeptic_corpus = return_comments(skeptic)
 
 # tokenize corpora
 
@@ -69,13 +71,13 @@ adj_tags = ["JJ", "JJR", "JJS"] # adj, adj comparative, adj superlative
 # find nouns, verbs, adjectives for any community
 
 def find_nouns(community):
-  return nltk.FreqDist([x[0] for x in community if x[1] in noun_tags])
+  return nltk.FreqDist([x[0] for x in community if x[1] in noun_tags and len(x[0]) > 2 and x[0] != "https"])
 
 def find_verbs(community):
-  return nltk.FreqDist([x[0] for x in community if x[1] in verb_tags])
+  return nltk.FreqDist([x[0] for x in community if x[1] in verb_tags and len(x[0]) > 2 and x[0] != "https"])
 
 def find_adjs(community):
-  return nltk.FreqDist([x[0] for x in community if x[1] in adj_tags])
+  return nltk.FreqDist([x[0] for x in community if x[1] in adj_tags and len(x[0]) > 2 and x[0] != "https"])
 
 
 # antiwork frequency distribution (nouns/verbs/adjectives)
@@ -111,7 +113,9 @@ skeptic_adjs = nltk.FreqDist(find_adjs(tagged_skeptic))
 #skeptic_nouns.plot(20, cumulative=False, title="Skeptic Nouns")
 #psychic_nouns.plot(20, cumulative=False, title="Psychic Nouns")
 
-productivity_adjs.plot(20, cumulative=False, title="Top 20 /r/productivity adjectives")
-antiwork_adjs.plot(20, cumulative=False, title="Top 20 /r/antiwork adjectives")
+productivity_nouns.plot(20, cumulative=False, title="Top 20 /r/productivity nouns")
+antiwork_nouns.plot(20, cumulative=False, title="Top 20 /r/antiwork nouns")
+psychic_nouns.plot(20, cumulative=False, title="Top 20 /r/psychic nouns")
+skeptic_nouns.plot(20, cumulative=False, title="Top 20 /r/skeptic nouns")
 
 
