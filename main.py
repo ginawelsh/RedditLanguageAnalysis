@@ -25,7 +25,7 @@ psychic = reddit.subreddit('psychic')
 skeptic = reddit.subreddit('skeptic')
 
 
-#[submission.comments for submission in antiwork.top(limit=10)]
+# sample 300 comments from each subreddit
 
 antiwork = antiwork.comments(limit=300)
 productivity = productivity.comments(limit=300)
@@ -34,6 +34,9 @@ skeptic = skeptic.comments(limit=300)
 
 # string to filter out in productivity data
 discord_string = "Did you know /r/Productivity has an official Discord server?"
+
+
+# return raw text from comments
 
 def return_comments(community):
   return [comment.body for comment in community if discord_string not in comment.body]
@@ -61,64 +64,66 @@ tagged_productivity = pos_tag(tokenized_productivity)
 tagged_psychic = pos_tag(tokenized_psychic)
 tagged_skeptic = pos_tag(tokenized_skeptic)
 
-#print(tagged_antiwork)
 
-noun_tags = ['NN', 'NNS', 'NNP', 'NNPS'] # noun singular, noun plural, proper noun singular, proper noun plural
-verb_tags = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"] # verb base, verb PST tense, verb gerund/progressive, verb PST participle, verb sing. PRES
-adj_tags = ["JJ", "JJR", "JJS"] # adj, adj comparative, adj superlative
+# PARTS OF SPEECH
+
+# noun singular, noun plural, proper noun singular, proper noun plural
+nouns = ['NN', 'NNS', 'NNP', 'NNPS'] 
+
+# verb base, verb PST tense, verb gerund/progressive, verb PST participle, verb sing. PRES
+verbs = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"] 
+
+# adj, adj comparative, adj superlative
+adjs = ["JJ", "JJR", "JJS"] 
 
 
 # find nouns, verbs, adjectives for any community
 
-def find_nouns(community):
-  return nltk.FreqDist([x[0] for x in community if x[1] in noun_tags and len(x[0]) > 2 and x[0] != "https"])
-
-def find_verbs(community):
-  return nltk.FreqDist([x[0] for x in community if x[1] in verb_tags and len(x[0]) > 2 and x[0] != "https"])
-
-def find_adjs(community):
-  return nltk.FreqDist([x[0] for x in community if x[1] in adj_tags and len(x[0]) > 2 and x[0] != "https"])
+def find_tags(community, pos_tag):
+  return nltk.FreqDist([x[0] for x in community if x[1] in pos_tag and len(x[0]) > 2 and x[0] != "https"])
 
 
 # antiwork frequency distribution (nouns/verbs/adjectives)
 
-antiwork_nouns = nltk.FreqDist(find_nouns(tagged_antiwork))
-antiwork_verbs = nltk.FreqDist(find_verbs(tagged_antiwork))
-antiwork_adjs = nltk.FreqDist(find_adjs(tagged_antiwork))
+antiwork_nouns = nltk.FreqDist(find_tags(tagged_antiwork, nouns))
+antiwork_verbs = nltk.FreqDist(find_tags(tagged_antiwork, verbs))
+antiwork_adjs = nltk.FreqDist(find_tags(tagged_antiwork, adjs))
 
 # productivity frequency distribution (nouns/verbs/adjectives)
 
-productivity_nouns = nltk.FreqDist(find_nouns(tagged_productivity))
-productivity_verbs = nltk.FreqDist(find_verbs(tagged_productivity))
-productivity_adjs = nltk.FreqDist(find_adjs(tagged_productivity))
+productivity_nouns = nltk.FreqDist(find_tags(tagged_productivity, nouns))
+productivity_verbs = nltk.FreqDist(find_tags(tagged_productivity, verbs))
+productivity_adjs = nltk.FreqDist(find_tags(tagged_productivity, adjs))
+
 
 # psychic frequency distribution (nouns/verbs/adjectives)
 
-psychic_nouns = nltk.FreqDist(find_nouns(tagged_psychic))
-psychic_verbs = nltk.FreqDist(find_verbs(tagged_psychic))
-psychic_adjs = nltk.FreqDist(find_adjs(tagged_psychic))
+
+psychic_nouns = nltk.FreqDist(find_tags(tagged_psychic, nouns))
+psychic_verbs = nltk.FreqDist(find_tags(tagged_psychic, verbs))
+psychic_adjs = nltk.FreqDist(find_tags(tagged_psychic, adjs))
 
 # skeptic frequency distribution (nouns/verbs/adjectives)
 
-skeptic_nouns = nltk.FreqDist(find_nouns(tagged_skeptic))
-skeptic_verbs = nltk.FreqDist(find_verbs(tagged_skeptic))
-skeptic_adjs = nltk.FreqDist(find_adjs(tagged_skeptic))
+skeptic_nouns = nltk.FreqDist(find_tags(tagged_skeptic, nouns))
+skeptic_verbs = nltk.FreqDist(find_tags(tagged_skeptic, verbs))
+skeptic_adjs = nltk.FreqDist(find_tags(tagged_skeptic, adjs))
 
 
-#print(psychic_nouns.items())
+# PLOTTING TOP 20 GRAPHS
 
+# TOP 20 NOUNS 
+productivity_nouns.plot(20, cumulative=False, title="Top 20 /r/productivity nouns")
+antiwork_nouns.plot(20, cumulative=False, title="Top 20 /r/skeptic nouns")
 
-# PLOTTING GRAPHS
+# TOP 20 VERBS
 
-#skeptic_adjs.plot(30, cumulative=False, title="Skeptic Adjectives")
-#psychic_adjs.plot(30, cumulative=False, title="Psychic Adjectives")
+productivity_verbs.plot(20, cumulative=False, title="Top 20 /r/productivity verbs")
+antiwork_verbs.plot(20, cumulative=False, title="Top 20 /r/antiwork verbs")
 
-#skeptic_nouns.plot(20, cumulative=False, title="Skeptic Nouns")
-#psychic_nouns.plot(20, cumulative=False, title="Psychic Nouns")
+# TOP 20 ADJECTIVES
 
-#productivity_nouns.plot(20, cumulative=False, title="Top 20 /r/productivity nouns")
-#antiwork_nouns.plot(20, cumulative=False, title="Top 20 /r/antiwork nouns")
-psychic_verbs.plot(20, cumulative=False, title="Top 20 /r/psychic verbs")
-skeptic_verbs.plot(20, cumulative=False, title="Top 20 /r/skeptic verbs")
+productivity_adjs.plot(20, cumulative=False, title="Top 20 /r/productivity adjectives")
+antiwork_adjs.plot(20, cumulative=False, title="Top 20 /r/antiwork adjectives")
 
 
