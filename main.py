@@ -56,6 +56,14 @@ tagged_productivity = pos_tag(tokenized_productivity)
 tagged_psychic = pos_tag(tokenized_psychic)
 tagged_skeptic = pos_tag(tokenized_skeptic)
 
+
+tagged_examples = open("tagged_examples.txt", "w")
+
+for i in tagged_productivity:
+  tagged_examples.write(str(i) + '\n')
+
+
+
 # PARTS OF SPEECH
 
 # noun singular, noun plural, proper noun singular, proper noun plural
