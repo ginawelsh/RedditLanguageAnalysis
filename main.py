@@ -28,7 +28,6 @@ skeptic = skeptic.comments(limit=300)
 # string to filter out in productivity data
 discord_string = "Did you know /r/Productivity has an official Discord server?"
 
-
 # return raw text from comments
 
 def return_comments(community):
@@ -56,14 +55,6 @@ tagged_productivity = pos_tag(tokenized_productivity)
 tagged_psychic = pos_tag(tokenized_psychic)
 tagged_skeptic = pos_tag(tokenized_skeptic)
 
-
-tagged_examples = open("tagged_examples.txt", "w")
-
-for i in tagged_productivity:
-  tagged_examples.write(str(i) + '\n')
-
-
-
 # PARTS OF SPEECH
 
 # noun singular, noun plural, proper noun singular, proper noun plural
@@ -76,40 +67,46 @@ verbs = ["VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
 adjs = ["JJ", "JJR", "JJS"] 
 
 
-# find nouns, verbs, adjectives for any community
+# retrieve frequencies for nouns, verbs, adjectives for any community
 
-def find_tags(community, pos_tag):
+def freq_words(community, pos_tag):
   return nltk.FreqDist([x[0] for x in community if x[1] in pos_tag and len(x[0]) > 2 and x[0] != "https"])
+
 
 # antiwork frequency distribution (nouns/verbs/adjectives)
 
-antiwork_nouns = nltk.FreqDist(find_tags(tagged_antiwork, nouns))
-antiwork_verbs = nltk.FreqDist(find_tags(tagged_antiwork, verbs))
-antiwork_adjs = nltk.FreqDist(find_tags(tagged_antiwork, adjs))
+antiwork_nouns = freq_words(tagged_antiwork, nouns) #.most_common(20)
+
+antiwork_verbs = freq_words(tagged_antiwork, verbs)
+antiwork_adjs = freq_words(tagged_antiwork, adjs)
 
 # productivity frequency distribution (nouns/verbs/adjectives)
 
-productivity_nouns = nltk.FreqDist(find_tags(tagged_productivity, nouns))
-productivity_verbs = nltk.FreqDist(find_tags(tagged_productivity, verbs))
-productivity_adjs = nltk.FreqDist(find_tags(tagged_productivity, adjs))
+productivity_nouns = freq_words(tagged_productivity, nouns)
+productivity_verbs = freq_words(tagged_productivity, verbs)
+productivity_adjs = freq_words(tagged_productivity, adjs)
 
 # psychic frequency distribution (nouns/verbs/adjectives)
-
-psychic_nouns = nltk.FreqDist(find_tags(tagged_psychic, nouns))
-psychic_verbs = nltk.FreqDist(find_tags(tagged_psychic, verbs))
+"""
+psychic_nouns = freq_words(tagged_psychic, nouns))
+psychic_verbs = freq_wordsfind_tags(tagged_psychic, verbs))
 psychic_adjs = nltk.FreqDist(find_tags(tagged_psychic, adjs))
 
 # skeptic frequency distribution (nouns/verbs/adjectives)
-
+"""
+"""
 skeptic_nouns = nltk.FreqDist(find_tags(tagged_skeptic, nouns))
 skeptic_verbs = nltk.FreqDist(find_tags(tagged_skeptic, verbs))
 skeptic_adjs = nltk.FreqDist(find_tags(tagged_skeptic, adjs))
 
+"""
 # PLOTTING TOP 20 GRAPHS
+
+
 
 # TOP 20 NOUNS 
 productivity_nouns.plot(20, cumulative=False, title="Top 20 /r/productivity nouns")
-antiwork_nouns.plot(20, cumulative=False, title="Top 20 /r/skeptic nouns")
+antiwork_nouns.plot(20, cumulative=False, title="Top 20 /r/antiwork nouns")
 
 # TOP 20 VERBS
 
@@ -120,3 +117,15 @@ antiwork_verbs.plot(20, cumulative=False, title="Top 20 /r/antiwork verbs")
 
 productivity_adjs.plot(20, cumulative=False, title="Top 20 /r/productivity adjectives")
 antiwork_adjs.plot(20, cumulative=False, title="Top 20 /r/antiwork adjectives")
+
+
+
+# EXTRA DOCUMENTS WITH EXAMPLES
+
+print(antiwork_corpus)
+
+
+tagged_examples = open("tagged_examples.txt", "w")
+for i in tagged_productivity:
+  tagged_examples.write(str(i) + '\n')
+
