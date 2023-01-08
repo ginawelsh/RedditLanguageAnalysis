@@ -3,9 +3,9 @@ from praw.models import MoreComments
 
 # connect to reddit
 
-reddit = praw.Reddit(client_id='8n0q-yj901hEsQ',
-                     client_secret='UIowXBsxjC-Q2Q9lZ1gVS7960HQ',
-                     user_agent='Productivity_NLP')
+reddit = praw.Reddit(client_id=''
+                     client_secret=''
+                     user_agent='')
 
 psychic = reddit.subreddit('psychic')
 skeptic = reddit.subreddit('skeptic')
