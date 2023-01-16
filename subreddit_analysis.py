@@ -50,8 +50,6 @@ skeptic_corpus = [comment.body for comment in skeptic]
 
 print(productivity_corpus)
 
-# need to filter out:
-#Did you know /r/Productivity has an official Discord server?\nJoin our Discord [here](https://discord.gg/productivity) and continue the conversation with over 5,000 members!\n\n\n*I am a bot, and this action was performed automatically. Please [contact the moderators of this subreddit](/message/compose/?to=/r/productivity) if you have any questions or concerns.*']
 filter_comment = "Did you know /r/Productivity has an official Discord server?\nJoin our Discord [here](https://discord.gg/productivity) and continue the conversation with over 5,000 members!\n\n\n*I am a bot, and this action was performed automatically. Please [contact the moderators of this subreddit](/message/compose/?to=/r/productivity) if you have any questions or concerns.*"
 
 def filter_discord_comment(filter_comment):
